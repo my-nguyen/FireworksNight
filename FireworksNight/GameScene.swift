@@ -20,10 +20,11 @@ class GameScene: SKScene {
     let leftEdge = -22
     let bottomEdge = -22
     let rightEdge = 1024 + 22
-    // to track the player's score
+    // track the player's score
+    var scoreLabel: SKLabelNode!
     var score: Int = 0 {
         didSet {
-            // your code here
+            scoreLabel.text = "Score: \(score)"
         }
     }
 
@@ -34,6 +35,15 @@ class GameScene: SKScene {
         background.blendMode = .Replace
         background.zPosition = -1
         addChild(background)
+
+        // add a score label to the scene
+        scoreLabel = SKLabelNode()
+        scoreLabel.text = "Score: 0"
+        // align the label to the right
+        scoreLabel.horizontalAlignmentMode = .Right
+        // position the label on the top-right edge of the scene
+        scoreLabel.position = CGPoint(x: 980, y: 700)
+        addChild(scoreLabel)
 
         // createa an NSTimer to call launchFireworks() every 6 seconds, with repeating enable
         gameTimer = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
