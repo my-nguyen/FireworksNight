@@ -188,4 +188,47 @@ class GameScene: SKScene {
             }
         }
     }
+
+    func explodeFirework(firework: SKNode) {
+        // create an explosion where the firework is
+        let emitter = SKEmitterNode(fileNamed: "explode")!
+        emitter.position = firework.position
+        addChild(emitter)
+
+        // remove the firework from the scene
+        firework.removeFromParent()
+    }
+
+    func explodeFireworks() {
+        var numExploded = 0
+        // loop backward through the fireworks array
+        for (index, fireworkContainer) in fireworks.enumerate().reverse() {
+            let firework = fireworkContainer.children[0] as! SKSpriteNode
+            // pick out the selected firework
+            if firework.name == "selected" {
+                // destroy this firework!
+                explodeFirework(fireworkContainer)
+                fireworks.removeAtIndex(index)
+
+                numExploded += 1
+            }
+        }
+
+        // calculate player's score based on the number of exploded fireworks
+        switch numExploded {
+        case 0:
+            // nothing – rubbish!
+            break
+        case 1:
+            score += 200
+        case 2:
+            score += 500
+        case 3:
+            score += 1500
+        case 4:
+            score += 2500
+        default:
+            score += 4000
+        }
+    }
 }
