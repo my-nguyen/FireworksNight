@@ -27,6 +27,8 @@ class GameScene: SKScene {
             scoreLabel.text = "Score: \(score)"
         }
     }
+    let launchMax = 20
+    var launchCount = 0
 
     override func didMoveToView(view: SKView) {
         // set a background picture
@@ -121,8 +123,16 @@ class GameScene: SKScene {
         addChild(node)
     }
 
-    // this method will launch fireworks five at a time in four different shapes
+    // this method will launch fireworks five at a time in five different shapes
     func launchFireworks() {
+        // game over when max launch is reached
+        if launchCount == launchMax {
+            // stop the timer
+            gameTimer.invalidate()
+            return
+        }
+
+        launchCount += 1
         let movementAmount: CGFloat = 1800
 
         // generate a random number between 0 and 4 inclusive.
@@ -160,17 +170,13 @@ class GameScene: SKScene {
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge)
 
         case 4:
-            // ten five, from the left to the right and from the right to the left
-            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 400)
+            // fire six, from the left to the right and from the right to the left
             createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 300)
             createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 200)
             createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 100)
-            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge)
-            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 400)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 300)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 200)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 100)
-            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge)
 
         default:
             break
