@@ -40,10 +40,26 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        checkForTouches(touches)
     }
    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesMoved(touches, withEvent: event)
+        checkForTouches(touches)
+    }
+    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        // loop backward through the fireworks array
+        for (index, firework) in fireworks.enumerate().reverse() {
+            // this uses a position high above so that rockets can explode off screen
+            if firework.position.y > 900 {
+                // if a firework gets past 900 points up vertically, remove it from the fireworks array
+                // and from the scene
+                fireworks.removeAtIndex(index)
+                firework.removeFromParent()
+            }
+        }
     }
 
     // this method accepts 3 parameters: the horizontal speed, and the X and Y coordinates for creation
@@ -135,6 +151,41 @@ class GameScene: SKScene {
 
         default:
             break
+        }
+    }
+
+    func checkForTouches(touches: Set<UITouch>) {
+        // fetch the touch location from the scene
+        guard let touch = touches.first else { return }
+        let location = touch.locationInNode(self)
+        // fetch all nodes under the touch location
+        let nodes = nodesAtPoint(location)
+
+        // look through all such nodes
+        for node in nodes {
+            if node is SKSpriteNode {
+                let sprite = node as! SKSpriteNode
+
+                // find any node with the name "firework"
+                if sprite.name == "firework" {
+                    // go through every firework in the fireworks array
+                    for parent in fireworks {
+                        // fetch the firework image within the firework (container node)
+                        let firework = parent.children[0] as! SKSpriteNode
+                        // if the firework was selected and is a different color than the firework
+                        // that was just tapped, then reset the name to "firework" and reset its color by 
+                        // setting colorBlendFactor to 1
+                        if firework.name == "selected" && firework.color != sprite.color {
+                            firework.name = "firework"
+                            firework.colorBlendFactor = 1
+                        }
+                    }
+                    // change the node name to "selected"
+                    sprite.name = "selected"
+                    // set colorBlendFactor to 0, to disable the color blending, making the firework white
+                    sprite.colorBlendFactor = 0
+                }
+            }
         }
     }
 }
