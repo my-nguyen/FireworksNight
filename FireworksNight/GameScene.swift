@@ -125,8 +125,8 @@ class GameScene: SKScene {
     func launchFireworks() {
         let movementAmount: CGFloat = 1800
 
-        // generate a random number between 0 and 3 inclusive.
-        switch GKRandomSource.sharedRandom().nextIntWithUpperBound(4) {
+        // generate a random number between 0 and 4 inclusive.
+        switch GKRandomSource.sharedRandom().nextIntWithUpperBound(5) {
         case 0:
             // fire five, straight up
             createFirework(xMovement: 0, x: 512, y: bottomEdge)
@@ -153,6 +153,19 @@ class GameScene: SKScene {
 
         case 3:
             // fire five, from the right to the left
+            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 400)
+            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 300)
+            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 200)
+            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 100)
+            createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge)
+
+        case 4:
+            // ten five, from the left to the right and from the right to the left
+            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 400)
+            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 300)
+            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 200)
+            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge + 100)
+            createFirework(xMovement: movementAmount, x: leftEdge, y: bottomEdge)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 400)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 300)
             createFirework(xMovement: -movementAmount, x: rightEdge, y: bottomEdge + 200)
